@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="Scripts/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="Scripts/knockout-2.1.0.debug.js"></script>
+    <script type="text/javascript" src="Scripts/knockout.validation.debug.js"></script>
+    <style>
+        .hlight {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <input type="text" data-bind="value: firstName, valueUpdate: 'afterkeydown'"></input>
+    </p>
+    <p>
+        <input type="text" data-bind="value: lastName"></input>
+    </p>
+    <span data-bind="text: name"></span>
+    <ul data-bind="foreach: foods">
+        <!-- ko if: $parent.isMale -->
+        <li data-bind="text: name, css: {hlight: like}" />
+        <!-- /ko -->
+        <li data-bind="text: name, style: {color: like ? 'red' : 'blue'}" />
+    </ul>
+    <div data-bind="if: isMale">Kevin is male</div>
+    <select data-bind="options: foods, optionsText: 'name'"></select>
+    <input type="button" id="btn" value="click me" data-bind="click: doSomething" />
+    <form action="knockout.html" method="get" data-bind="submit: onSubmit">
+    <input type="submit" value="go" />
+    </form>
+</body>
+<script type="text/javascript">
+    function Food(name, like) {
+        this.name = name;
+        this.like = like;
+    }
+
+    function Person() {
+        var self = this;
+
+        self.firstName = ko.observable('Kevin').extend({required: {message: 'Numpty'}});
+        self.lastName = ko.observable('Jones');
+
+        self.name = ko.computed(function () {
+            return this.firstName() + " " + this.lastName();
+        }, self);
+
+        self.foods = ko.observableArray([new Food('ham', true), new Food('cheese', false)]);
+
+        self.isMale = ko.observable(false);
+
+        self.doSomething = function () {
+            alert(self.name());
+        };
+
+        self.onSubmit = function () {
+            alert('submit');
+        };
+    }
+
+    $(function () {
+        ko.applyBindings(new Person());
+    });
+
+</script>
+</html>

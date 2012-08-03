@@ -1,0 +1,105 @@
+﻿body { font-size: .85em; font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif; color: #232323; background-color: #fff; }
+
+header, footer, nav, section { display: block; }
+
+.wrapper {  
+	.main { margin: 0em auto; max-width: 80%; font-size: 2em;
+		.addTodo {width: 100%; font-size: 20px; margin: 15px 0;}
+		#todoList {
+			ul {
+				li { margin: 15px 0; 
+					div {
+						position: relative;
+						span {
+							float:left; width: 80%;
+						}
+						&:hover {
+							a { display: block;}
+						}
+					}
+					label {
+						input[type=checkbox] {
+							margin: 0 10px;
+						}
+					}
+					a {
+						position: absolute;
+						right: 10px;
+						top: 6px;
+						display: none;
+						cursor: pointer;
+						width: 20px;
+						height: 20px;
+						background: url(/content/destroy.png) no-repeat center center;
+					}
+				}
+			}
+		}
+	}
+}
+
+.done{ color: gray; text-decoration: line-through;}
+
+footer {
+	display: block;
+	margin: 20px -20px -20px -20px;
+	overflow: hidden;
+	color: #555;
+	background: #F4FCE8;
+	border-top: 1px solid #EDEDED;
+	padding: 0 20px;
+	line-height: 36px;
+	-moz-border-radius: 0 0 5px 5px;
+	-o-border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+	border-radius: 0 0 5px 5px;
+
+	.clear{
+		display: block;
+		float: right;
+		line-height: 20px;
+		text-decoration: none;
+		background: rgba(0, 0, 0, 0.1);
+		color: #555;
+		font-size: 11px;
+		padding: 0 10px 1px;
+		-moz-border-radius: 12px;
+		-webkit-border-radius: 12px;
+		-o-border-radius: 12px;
+		border-radius: 12px;
+		-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
+		-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
+		-o-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
+		box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
+		cursor: pointer;
+		margin: 8px 0 0 3px;
+	}
+	.count{
+		font-size: 14px;
+	}
+}
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset { border: 1px solid #ddd; padding: 0 1.4em 1.4em 1.4em; margin: 0 0 1.5em 0; }
+
+legend { font-size: 1.2em; font-weight: bold; }
+
+textarea { min-height: 75px; }
+
+.editor-label { margin: 1em 0 0 0; }
+
+.editor-field { margin: 0.5em 0 0 0; }
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error { color: #f00; }
+
+.field-validation-valid { display: none; }
+
+.input-validation-error { border: 1px solid #f00; background-color: #fee; }
+
+.validation-summary-errors { font-weight: bold; color: #f00; }
+
+.validation-summary-valid { display: none; }

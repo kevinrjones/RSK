@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>jQuery Test</title>
+    <script>
+        /// <reference path="Scripts/jquery-1.7.2.js"/>
+        /// <reference path="Scripts/knockout-2.1.0.debug.js"/>
+    </script>
+    <script type="text/javascript" src="Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="Scripts/knockout-2.1.0.js"></script>
+    <style>
+        .parent { width: 700px; }
+            .parent div { border: 1px black solid;font-size: 20pt;font-family: sans-serif;}
+            .parent ul { border: 1px black solid;font-size: 20pt;font-family: sans-serif;}
+        .red{ color: red;}
+        .blue{ color: blue;}
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <ul id="inline" data-bind="foreach: foods">            
+            <li data-bind="text: name"></li>
+        </ul>
+        <ul id="named" data-bind="template:{name: 'namedTemplate', foreach: foods}">
+        </ul>
+        <div id="cssBinding">
+            <p>
+                <label>Red/Blue<input type="checkbox" data-bind="checked: highlight"/></label>
+            </p>
+            <p>
+                <span data-bind="css: {red:highlight, blue:!highlight()}">Colored</span>
+            </p>
+        </div>
+        <div id="abled">
+            <p>
+                <label>Enabled<input type="checkbox" data-bind="checked: isEnabled"/></label>
+            </p>
+            <p>
+                <input type="text" placeholder="Enter" data-bind="enable: isEnabled"/>
+            </p>
+        </div>
+    </div>
+</body>
+
+    <script type="text/html" id="namedTemplate">
+        <li data-bind="text: name"></li>
+    </script>
+<script type="text/javascript">
+    var food = function (name) {
+        this.name = name;
+    };
+
+    function Person() {
+        this.firstName = ko.observable("Alice");
+        this.lastName = ko.observable("Smith");
+        this.name = ko.computed(function () {
+            return this.firstName() + " " + this.lastName();
+        }, this);
+        this.foods = ko.observableArray([new food("mushrooms"), new food("cheese")]);
+        this.selectedItems = ko.observableArray([this.foods()[1]]);
+        this.selectedFood = ko.observable();
+    };
+
+    function Color() {
+        this.highlight = ko.observable(true);
+    }
+
+    function Enabled() {
+        this.isEnabled = ko.observable(true);
+    }
+
+    $(function () {
+        ko.applyBindings(new Person(), $('#inline')[0]);
+        ko.applyBindings(new Person(), $('#named')[0]);
+        ko.applyBindings(new Color(), $('#cssBinding')[0]);
+        ko.applyBindings(new Enabled(), $('#abled')[0]);
+    });
+
+</script>
+</html>

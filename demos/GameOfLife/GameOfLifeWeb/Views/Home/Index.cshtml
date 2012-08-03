@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "title";
+}
+<section class="wrapper">
+    <section class="main">
+        <section id="body">
+            <p>Width:
+                <input type="text" data-bind="value: width" /></p>
+            <p>Height:
+                <input type="text" data-bind="value: height" /></p>
+
+            <table data-bind="template: {foreach: rows}">
+                <tr data-bind="template: {foreach: cells}">
+                    <td data-bind="css: {alive: alive}, click: live"></td>
+                </tr>
+            </table>
+
+            <p>
+                <input type="button" value="Run" data-bind="click: run" /><input type="button" value="Stop" data-bind="click: stop" />
+
+
+            </p>
+        </section>
+    </section>
+</section>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/life/Life.js"></script>
+    <script type="text/javascript">
+        var data = { width: 20, height: 20 };
+        var viewModel = new LifeViewModel(data);
+        $(function () {
+            ko.applyBindings(viewModel);
+        });
+    </script>
+}

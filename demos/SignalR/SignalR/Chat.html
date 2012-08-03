@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="Scripts/jquery-1.6.4.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.signalR-0.5.2.js"></script>
+    <script type="text/javascript" src="/signalr/hubs"></script>
+    <title></title>
+</head>
+    <body>
+        <input type="text" id="data"/>
+        <input type="button" id="msg" value="talk to me!"/>
+        <br/>
+        <input type="button" id="getLastMessage" value="Get Last Message"/>
+        <br/>
+        <textarea id="messages" cols="80" rows="20"></textarea>
+    </body>
+    <script type="text/javascript">
+        $(function () {
+            var chat = $.connection.chatHub;
+
+            chat.newMessage = function (data) {
+                $('#messages').append(data + "\r");
+            };
+
+            $.connection.hub.start();
+
+            $('#msg').click(function () {
+                chat.say($('#data').val());
+            });
+
+            $('#getLastMessage').click(function () {
+                chat.getLastMessage().done(function (data) {
+                    $('#messages').append(data + "\r");
+                });
+            });
+        });
+    </script>
+</html>

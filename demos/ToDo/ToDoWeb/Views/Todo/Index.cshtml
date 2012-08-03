@@ -1,0 +1,128 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "title";
+}
+
+<h2>title</h2>
+<section class="wrapper">
+    <section class="main">
+        <div>
+            What is there to do?
+        </div>
+        <div id="addTodo">
+            <input type="text" data-bind="value: todo, event:{ keyup: addTask }" placeholder="Todo Item"
+                class="addTodo" />
+        </div>
+        <div id="todoList" data-bind="template: {name: 'todoItemsTemplate', foreach: todos}">
+        </div>
+        <footer>
+            <a class="clear" data-bind="visible: completed().length > 0, click: clearCompleted">
+                Clear Completed</a>
+            <a class="clear" data-bind="visible: completed().length > 0, click: save">
+                Save to server</a>
+            <a class="clear" data-bind="click: get">
+                Get from server</a>
+            <div class="count">
+                <span data-bind="text: left()"></span>
+                &nbsp; task(s) left
+            </div>
+        </footer>
+    </section>
+</section>
+
+@section scripts
+{
+    <script id="todoItemsTemplate" type="text/html">
+        <ul>
+            <li>
+                <div>
+                    <span data-bind="text: todo, css: {done: isDone}"></span>
+                    <label>Done?<input type="checkbox" data-bind="checked: isDone" /></label>
+                    <a class="destroy" data-bind="click: remove"></a>
+                </div>
+            </li>
+        </ul>
+    </script>
+    <script type="text/javascript">
+
+
+        function todoListViewModel(data) {
+            var self = this;
+
+            self.id = ko.observable();
+            self.todo = ko.observable();
+            self.todos = ko.observableArray([]);
+
+            ko.mapping.fromJSON(data, { todos: todoItemOptions }, self);
+
+            self.completed = ko.computed(function () {
+                return ko.utils.arrayFilter(self.todos(), function (item) {
+                    return item.isDone();
+                });
+            });
+            self.left = ko.computed(function () {
+                return self.todos().length - self.completed().length;
+            });
+
+            self.addTask = function (obj, event) {
+                var todo = self.todo();
+                if (event.keyCode == 13 && todo !== "") {
+                    self.todos.push(TodoItem({ parent: this.todos, data: { 'todo': todo, 'isDone': false } }));
+                    self.todo('');
+                }
+            };
+
+            self.clearCompleted = function () {
+                self.todos.removeAll(self.completed());
+            };
+
+            self.save = function () {
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("Update")',
+                    data: ko.mapping.toJSON(self),
+                    success: function () {
+                        alert('done');
+                    },                    
+                    contentType: 'application/json'
+                });
+            };
+
+            self.get = function () {
+                $.getJSON('@Url.Action("Get")', function (result) {
+                    var parsed = JSON.stringify(result);
+                    var viewModel = new todoListViewModel(parsed);
+                    ko.applyBindings(viewModel);
+                });
+            };
+
+            self.syncer = ko.computed(function () {
+                localStorage['todos'] = ko.mapping.toJSON(self);
+            });
+        }
+
+        var TodoItem = function (options) {
+            var todoItem = ko.mapping.fromJS(options.data);
+            
+            todoItem.remove = function () {
+                alert('remove');
+            };
+
+            return todoItem;
+        };
+
+        todoItemOptions = {
+            create: TodoItem
+        };
+
+        $(function () {
+            var defaultData = '{"todos":[],"todo":"", "id":"0"}';
+
+            var jsonData = (window.localStorage && localStorage['todos']) || defaultData;
+            var viewModel = new todoListViewModel(jsonData);
+
+            ko.applyBindings(viewModel);
+        });
+
+    </script>
+}

@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script type="text/javascript" src="Scripts/jquery-1.6.2.js"></script>
+</head>
+    <body>
+        <input type="button" id="go" value="GO!"/>
+    </body>
+    <script type="text/javascript">
+        $(function () {
+            $('#go').click(function () {
+                $.ajax({
+                    url: 'default.html',
+                    type: 'get',
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+            });
+        });
+    </script>
+</html>

@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="Scripts/jquery-1.6.4.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.signalR-0.5.2.js"></script>
+    <title></title>
+</head>
+    <body>
+        <input type="text" id="data"/>
+        <input type="button" id="msg" value="send me!"/>
+        <ul id="output">
+        
+        </ul>
+
+    </body>
+    <script type="text/javascript">
+        $(function () {
+            var connection = $.connection('echo');
+
+            connection.start();
+
+            connection.received(function (data) {
+                $('#output').append("<li>" + data + "</li>");
+            });
+
+            $('#msg').click(function () {
+                connection.send($('#data').val());
+            });
+        });
+    </script>
+</html>

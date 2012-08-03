@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>jQuery Test</title>
+    <script type="text/javascript" src="Scripts/jquery-1.7.2.js">
+        /// <reference path="Scripts/jquery-1.7.2.js"/>
+    </script>
+</head>
+    <body>
+        <p>First Name: <input type="text" id="firstName"/></p>
+        <p>Last Name: <input type="text" id="lastName"/></p>
+        <p>Name: <strong id="name"></strong></p>
+    </body>
+    <script type="text/javascript">
+        var person = {
+            firstName: "Kevin",
+            lastName: "Jones"
+        }
+
+        $(function () {
+            $('#firstName').val(person.firstName);
+            $('#lastName').val(person.lastName);
+
+            setName();
+
+            $('#firstName').keyup(function () {
+                person.firstName = $('#firstName').val();
+                setName();
+            });
+
+            $('#lastName').keyup(function () {
+                person.lastName = $('#lastName').val();
+                setName();
+            });
+        });
+        
+        function setName() {
+            $('#name').text(person.firstName + " " + person.lastName);
+        }
+    </script>
+</html>

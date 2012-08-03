@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>jQuery Test</title>
+    <script>
+        /// <reference path="Scripts/jquery-1.7.2.js"/>
+        /// <reference path="Scripts/knockout-2.1.0.debug.js"/>
+    </script>
+    <script type="text/javascript" src="Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="Scripts/knockout-2.1.0.js"></script>
+    <style>
+        .parent { width: 700px; }
+            .parent select { width: 100%; }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+<!--        <select multiple="multiple" data-bind="options: foods, optionsText: 'name', value: selectedFood, selectedOptions: selectedItems">
+        </select>-->
+<!--        <select data-bind="options: foods, optionsText: 'name', value: selectedFood">
+        </select>-->
+        <select data-bind="options: foods, optionsText: 'name', value: selectedFood, optionsCaption: 'Choose...'">
+        </select>
+    </div>
+</body>
+<script type="text/javascript">
+    var food = function (name) {
+        this.name = name;
+    };
+
+    function Person() {
+        this.firstName = ko.observable("Alice");
+        this.lastName = ko.observable("Smith");
+        this.name = ko.computed(function () {
+            return this.firstName() + " " + this.lastName();
+        }, this);
+        this.foods = ko.observableArray([new food("mushrooms"), new food("cheese")]);
+        this.selectedItems = ko.observableArray([this.foods()[1]]);
+        this.selectedFood = ko.observable();
+    };
+
+    $(function () {
+        ko.applyBindings(new Person());
+    });
+
+</script>
+</html>

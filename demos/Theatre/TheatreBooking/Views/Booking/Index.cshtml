@@ -1,0 +1,49 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "title";
+}
+
+<div class="wrapper">
+    <div class="main">
+        <h2>title</h2>
+        <section id="body">
+            <table>
+                <tbody data-bind="foreach: rows">
+                    <tr data-bind="foreach: $data.seats">
+                        <td data-bind="click: $data.bookSeat, css: {booked: $data.booked()}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="/signalr/hubs"></script>
+    <script type="text/javascript" src="~/Scripts/TheatreBooking.js"></script>
+
+    <script type="text/javascript">
+        var theatre;
+        var viewModel;
+        $(function () {
+            theatre = $.connection.theatreBookingHub;
+
+            theatre.updateTheatre = function (data) {
+                ko.mapping.fromJSON(data, viewModel);
+            };
+
+            theatre.initializeTheatre = function(data) {
+                viewModel = new TheatreViewModel(data, theatre);
+                ko.applyBindings(viewModel);
+            };
+
+            $.connection.hub.start(function () {
+                theatre.getInitialData().done(function (theatreData) {
+                    theatre.initializeTheatre(theatreData);
+                });
+                
+            });
+        });
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>jQuery Test</title>
+    <script>
+        /// <reference path="Scripts/jquery-1.7.2.js"/>
+        /// <reference path="Scripts/knockout-2.1.0.debug.js"/>
+        /// <reference path="Scripts/knockout.validation.debug.js"/>
+    </script>
+    <script type="text/javascript" src="Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="Scripts/knockout-2.1.0.js"></script>
+    <script type="text/javascript" src="Scripts/knockout.validation.js"></script>
+    <style>
+        .parent { width: 700px; }
+            .parent select { width: 100%; }
+        .row { clear: both; padding-top: 15px; }
+            .row span.label { float: left; width: 200px; text-align: right; padding-right: 10px; }
+            .row input.inputs { float: left; width: 200px; }
+            .row span.validationMessage { color: red; float: left; padding-left: 10px; }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <form id="person" data-bind="submit: onSubmit">
+        <div class="row">
+            <span class="label">First Name</span>
+            <input type="text" class="inputs" data-bind="value: firstName" />
+        </div>
+        <div class="row">
+            <span class="label">Last Name</span><input type="text" class="inputs" data-bind="value: lastName" />
+        </div>
+            <div class="row">
+                <input type="submit"/>
+            </div>
+        </form>
+    </div>
+</body>
+<script type="text/javascript">
+function Person() {
+    var self = this;
+    self.firstName = ko.observable("Alice").extend({ required: true });
+    self.lastName = ko.observable("Smith").extend({ required: true });
+    self.errors = ko.validation.group(self);
+    self.onSubmit = function () {
+        if (self.errors().length == 0) {
+                alert('Thank you.');
+            } else {
+                alert('Please check your submission.');
+                self.errors.showAllMessages();
+            }
+        };
+    };
+
+    $(function () {
+        ko.applyBindings(new Person());
+    });
+
+</script>
+</html>

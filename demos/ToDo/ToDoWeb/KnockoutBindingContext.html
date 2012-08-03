@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>jQuery Test</title>
+    <script>
+        /// <reference path="Scripts/jquery-1.7.2.js"/>
+        /// <reference path="Scripts/knockout-2.1.0.debug.js"/>
+    </script>
+    <script type="text/javascript" src="Scripts/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="Scripts/knockout-2.1.0.js"></script>
+    <style>
+        .parent { width: 700px; }
+            .parent div { border: 1px black solid;font-size: 20pt;font-family: sans-serif;}
+        .red{ color: red;}
+        .blue{ color: blue;}
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div id="inline" data-bind="with: address">
+            <div data-bind="text: first"></div>
+            <div data-bind="text: town"></div>
+            <div data-bind="text: postcode"></div>
+            <div data-bind="text: $parent.name"></div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        ko.applyBindings({
+            name: ko.observable("Kevin"),
+            address: {first: "3 The Street", town: "Toy Town", postcode: "UR1 IM2" }
+        });
+    });
+</script>
+</html>
