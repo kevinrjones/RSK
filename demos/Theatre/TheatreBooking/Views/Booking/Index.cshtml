@@ -30,7 +30,7 @@
             theatre = $.connection.theatreBookingHub;
 
             theatre.updateTheatre = function (data) {
-                ko.mapping.fromJSON(data, viewModel);
+                ko.mapping.fromJS(data, viewModel);
             };
 
             theatre.initializeTheatre = function(data) {
